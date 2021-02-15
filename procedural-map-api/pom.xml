@@ -7,15 +7,13 @@
 		<relativePath>../procedural-map-build</relativePath>
 	</parent>
 	
-	<groupId>com.swayzetrain.utility</groupId>
 	<artifactId>procedural-map-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>Procedural Map Generator API</name>
 	<description>Procedural Map Generator API Project</description>
 	<packaging>jar</packaging>
 	
 	<properties>
-		<java.version>14</java.version>
+		<java.version>11</java.version>
 	</properties>
 	
 	<dependencies>
