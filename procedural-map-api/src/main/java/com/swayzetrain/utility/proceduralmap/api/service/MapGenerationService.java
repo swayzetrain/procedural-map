@@ -30,15 +30,15 @@ public class MapGenerationService {
 	
 	private void printMapToConsole(Integer[][] map) {
 		
-		for(int y = 0; y < map[0].length; y++) {
+		for(int y = 0; y < map.length; y++) {
 			System.out.print("|");
-			for(int x = 0; x < map.length; x++) {
-				if(map[x][y] == 1) {
+			for(int x = 0; x < map[0].length; x++) {
+				if(map[y][x] == 1) {
 					System.out.print(" ");
-				} else if(map[x][y] == 2){
-					System.out.print("\u001B[32m" + map[x][y] + "\u001B[0m");
+				} else if(map[y][x] == 2){
+					System.out.print("\u001B[32m" + map[y][x] + "\u001B[0m");
 				} else {
-					System.out.print(map[x][y]);
+					System.out.print(map[y][x]);
 				}
 			}
 			System.out.println("|");

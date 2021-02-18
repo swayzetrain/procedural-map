@@ -13,17 +13,17 @@ public class RandomWalkService {
 	public RandomWalkService() {}
 	
 	public RandomWalkService(Integer width, Integer height) {
-		map = new Integer[width][height];
+		map = new Integer[height][width];
 		initializeMap();
 		randomizationService = new RandomizationService();
 	}
 	
 	public Integer[][] generateRandomWalkMap(Integer maxTunnels, Integer maxLength, Integer treasures) {
-		Integer width = map.length;
-		Integer height = map[0].length;
+		Integer width = map[0].length;
+		Integer height = map.length;
 		
 		Coordinate coordinate = randomizationService.generateRandomCoordinate(width, height);
-		map[coordinate.getX()][coordinate.getY()] = 1;
+		map[coordinate.getY()][coordinate.getX()] = 1;
 		
 		for(int tunnelCount = 0; tunnelCount < maxTunnels; tunnelCount++) {
 			Direction directionToWalk = randomizationService.generateRandomDirection();
@@ -50,7 +50,7 @@ public class RandomWalkService {
 				}
 				
 				coordinate.setX(coordinate.getX() - 1);
-				map[coordinate.getX()][coordinate.getY()] = 1;
+				map[coordinate.getY()][coordinate.getX()] = 1;
 			}
 			break;
 		case RIGHT:
@@ -60,7 +60,7 @@ public class RandomWalkService {
 				}
 				
 				coordinate.setX(coordinate.getX() + 1);
-				map[coordinate.getX()][coordinate.getY()] = 1;
+				map[coordinate.getY()][coordinate.getX()] = 1;
 			}
 			break;
 		case UP:
@@ -70,7 +70,7 @@ public class RandomWalkService {
 				}
 				
 				coordinate.setY(coordinate.getY() - 1);
-				map[coordinate.getX()][coordinate.getY()] = 1;
+				map[coordinate.getY()][coordinate.getX()] = 1;
 			}
 			break;
 		case DOWN:
@@ -80,7 +80,7 @@ public class RandomWalkService {
 				}
 				
 				coordinate.setY(coordinate.getY() + 1);
-				map[coordinate.getX()][coordinate.getY()] = 1;
+				map[coordinate.getY()][coordinate.getX()] = 1;
 			}
 			break;
 		default:
@@ -89,19 +89,19 @@ public class RandomWalkService {
 	}
 	
 	private void initializeMap() {
-		for(int x = 0; x < map.length; x++) {
-			for(int y = 0; y < map[0].length; y++) {
-				map[x][y] = 0;
+		for(int y = 0; y < map.length; y++) {
+			for(int x = 0; x < map[0].length; x++) {
+				map[y][x] = 0;
 			}
 		}
 	}
 	
 	private void buryTreasure() {
 		buryCounter++;
-		Coordinate coordinate = randomizationService.generateRandomCoordinate(map.length, map[0].length);
+		Coordinate coordinate = randomizationService.generateRandomCoordinate(map[0].length, map.length);
 		
-		if(map[coordinate.getX()][coordinate.getY()] == 1) {
-			map[coordinate.getX()][coordinate.getY()] = 2;
+		if(map[coordinate.getY()][coordinate.getX()] == 1) {
+			map[coordinate.getY()][coordinate.getX()] = 2;
 		} else {
 			buryTreasure();
 		}
