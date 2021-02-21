@@ -9,8 +9,9 @@ public class RandomizationService {
 	
 	Random generator;
 	
-	public RandomizationService() {
+	public RandomizationService(Long seed) {
 		generator = new Random();
+		generator.setSeed(seed);
 	}
 	
 	public Direction generateRandomDirection() {

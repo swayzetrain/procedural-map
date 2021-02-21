@@ -13,15 +13,15 @@ import com.swayzetrain.utility.proceduralmap.common.service.RandomizationService
 public class RandomizationController {
 
 	@GetMapping("/v1/randomization/directions")
-	public ResponseEntity<Direction> getRandomDirection() {
-		RandomizationService randomizationService = new RandomizationService();
+	public ResponseEntity<Direction> getRandomDirection(@RequestParam(required=true) Long seed) {
+		RandomizationService randomizationService = new RandomizationService(seed);
 		
 		return new ResponseEntity<>(randomizationService.generateRandomDirection(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/v1/randomization/integers")
-	public ResponseEntity<Integer> getRandomInteger(@RequestParam(required=true) Integer maxLength) {
-		RandomizationService randomizationService = new RandomizationService();
+	public ResponseEntity<Integer> getRandomInteger(@RequestParam(required=true) Integer maxLength, @RequestParam(required=true) Long seed) {
+		RandomizationService randomizationService = new RandomizationService(seed);
 		
 		return new ResponseEntity<>(randomizationService.generateRandomIntegerExcludingZero(maxLength), HttpStatus.OK);
 	}

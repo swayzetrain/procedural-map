@@ -8,14 +8,13 @@ public class RandomWalkService {
 	
 	private Integer[][] map;
 	private RandomizationService randomizationService;
-	private Integer buryCounter = 0;
 	
 	public RandomWalkService() {}
 	
-	public RandomWalkService(Integer width, Integer height) {
+	public RandomWalkService(Integer width, Integer height, RandomizationService randomizationService) {
 		map = new Integer[height][width];
 		initializeMap();
-		randomizationService = new RandomizationService();
+		this.randomizationService = randomizationService;
 	}
 	
 	public Integer[][] generateRandomWalkMap(Integer maxTunnels, Integer maxLength, Integer treasures) {
@@ -31,12 +30,6 @@ public class RandomWalkService {
 			
 			walk(coordinate, directionToWalk, tunnelLength, width, height);
 		}
-		
-		for(int treasureCount = 0; treasureCount < treasures; treasureCount++) {
-			buryTreasure();
-		}
-		
-		System.out.println("BuryCounter: " + buryCounter + "\n\n");
 		
 		return map;
 	}
@@ -93,17 +86,6 @@ public class RandomWalkService {
 			for(int x = 0; x < map[0].length; x++) {
 				map[y][x] = 0;
 			}
-		}
-	}
-	
-	private void buryTreasure() {
-		buryCounter++;
-		Coordinate coordinate = randomizationService.generateRandomCoordinate(map[0].length, map.length);
-		
-		if(map[coordinate.getY()][coordinate.getX()] == 1) {
-			map[coordinate.getY()][coordinate.getX()] = 2;
-		} else {
-			buryTreasure();
 		}
 	}
 }

@@ -1,15 +1,40 @@
 package com.swayzetrain.utility.proceduralmap.common.model;
 
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.swayzetrain.utility.proceduralmap.common.enums.MapAlgorithm;
 
+@JsonInclude(Include.NON_NULL)
 public class MapMetadata {
-	
+
+	@NotNull(groups = { New.class }, message = "mapAlgorithm is required for this call")
 	private MapAlgorithm mapAlgorithm;
+
+	@NotNull(groups = { New.class }, message = "height is required for this call")
 	private Integer height;
+
+	@NotNull(groups = { New.class }, message = "width is required for this call")
 	private Integer width;
+
+	@NotNull(groups = { NewRandomWalk.class }, message = "maxTunnels is required for this call")
 	private Integer maxTunnels;
+
+	@NotNull(groups = { NewRandomWalk.class }, message = "maxLength is required for this call")
 	private Integer maxLength;
+
 	private Integer treasures;
+
+	private Long seed;
+
+	private Coordinate spawnCoordinate;
+
+	@NotNull(groups = { New.class }, message = "generateSpawnCoordinate is required for this call")
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private boolean generateSpawnCoordinate;
 
 	public MapAlgorithm getMapAlgorithm() {
 		return mapAlgorithm;
@@ -58,5 +83,35 @@ public class MapMetadata {
 	public void setTreasures(Integer treasures) {
 		this.treasures = treasures;
 	}
+
+	public Long getSeed() {
+		return seed;
+	}
+
+	public void setSeed(Long seed) {
+		this.seed = seed;
+	}
+
+	public Coordinate getSpawnCoordinate() {
+		return spawnCoordinate;
+	}
+
+	public void setSpawnCoordinate(Coordinate spawnCoordinate) {
+		this.spawnCoordinate = spawnCoordinate;
+	}
+
+	public boolean isGenerateSpawnCoordinate() {
+		return generateSpawnCoordinate;
+	}
+
+	public void setGenerateSpawnCoordinate(boolean generateSpawnCoordinate) {
+		this.generateSpawnCoordinate = generateSpawnCoordinate;
+	}
+
+	public interface New {
+	};
+
+	public interface NewRandomWalk {
+	};
 
 }
