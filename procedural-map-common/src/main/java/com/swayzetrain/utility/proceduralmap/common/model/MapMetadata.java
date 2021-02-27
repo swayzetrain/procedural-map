@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.swayzetrain.utility.proceduralmap.common.enums.MapAlgorithm;
 
 @JsonInclude(Include.NON_NULL)
@@ -26,15 +24,10 @@ public class MapMetadata {
 	@NotNull(groups = { NewRandomWalk.class }, message = "maxLength is required for this call")
 	private Integer maxLength;
 
-	private Integer treasures;
-
 	private Long seed;
-
-	private Coordinate spawnCoordinate;
-
+	
 	@NotNull(groups = { New.class }, message = "generateSpawnCoordinate is required for this call")
-	@JsonProperty(access = Access.WRITE_ONLY)
-	private boolean generateSpawnCoordinate;
+	private boolean edgePostProcessingEnabled;
 
 	public MapAlgorithm getMapAlgorithm() {
 		return mapAlgorithm;
@@ -76,14 +69,6 @@ public class MapMetadata {
 		this.maxLength = maxLength;
 	}
 
-	public Integer getTreasures() {
-		return treasures;
-	}
-
-	public void setTreasures(Integer treasures) {
-		this.treasures = treasures;
-	}
-
 	public Long getSeed() {
 		return seed;
 	}
@@ -92,20 +77,12 @@ public class MapMetadata {
 		this.seed = seed;
 	}
 
-	public Coordinate getSpawnCoordinate() {
-		return spawnCoordinate;
+	public boolean isEdgePostProcessingEnabled() {
+		return edgePostProcessingEnabled;
 	}
 
-	public void setSpawnCoordinate(Coordinate spawnCoordinate) {
-		this.spawnCoordinate = spawnCoordinate;
-	}
-
-	public boolean isGenerateSpawnCoordinate() {
-		return generateSpawnCoordinate;
-	}
-
-	public void setGenerateSpawnCoordinate(boolean generateSpawnCoordinate) {
-		this.generateSpawnCoordinate = generateSpawnCoordinate;
+	public void setEdgePostProcessingEnabled(boolean edgePostProcessingEnabled) {
+		this.edgePostProcessingEnabled = edgePostProcessingEnabled;
 	}
 
 	public interface New {

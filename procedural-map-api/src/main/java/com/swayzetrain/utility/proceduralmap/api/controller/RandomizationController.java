@@ -1,5 +1,7 @@
 package com.swayzetrain.utility.proceduralmap.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.swayzetrain.utility.proceduralmap.api.service.MapUtilityService;
 import com.swayzetrain.utility.proceduralmap.common.enums.Direction;
-import com.swayzetrain.utility.proceduralmap.common.enums.TileType;
+import com.swayzetrain.utility.proceduralmap.common.enums.TileCategory;
 import com.swayzetrain.utility.proceduralmap.common.model.Coordinate;
+import com.swayzetrain.utility.proceduralmap.common.model.MapDataPoint;
 import com.swayzetrain.utility.proceduralmap.common.service.RandomizationService;
 
 @RestController
@@ -35,9 +38,11 @@ public class RandomizationController {
 		return new ResponseEntity<>(randomizationService.generateRandomIntegerExcludingZero(maxLength), HttpStatus.OK);
 	}
 	
-	@PostMapping("/v1/randomization/path-coordinates")
-	public ResponseEntity<Coordinate> createRandomPathCoordinate(@RequestBody Integer[][] map) {
-		return new ResponseEntity<>(mapUtilityService.findCoordinateofGivenType(map, TileType.PATH), HttpStatus.OK);
+	@PostMapping("/v1/randomization/coordinates/path-categories")
+	public ResponseEntity<List<Coordinate>> createRandomPathCoordinate(@RequestBody MapDataPoint[][] map, @RequestParam(value = "quantity") Integer quantity) {
+		return new ResponseEntity<>(mapUtilityService.findCoordinateOfGivenCategory(map, quantity, TileCategory.PATH), HttpStatus.OK);
+		
+		
 	}
 	
 }

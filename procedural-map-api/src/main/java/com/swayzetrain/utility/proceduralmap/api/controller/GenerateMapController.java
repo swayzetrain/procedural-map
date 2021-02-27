@@ -21,5 +21,4 @@ public class GenerateMapController {
 	public ResponseEntity<Map> generateMap(@RequestBody @Validated(MapMetadata.New.class) MapMetadata mapMetadata) {
 		return mapGenerationService.generateMap(mapMetadata);
 	}
-
 }

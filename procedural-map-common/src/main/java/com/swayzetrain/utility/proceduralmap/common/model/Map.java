@@ -2,14 +2,14 @@ package com.swayzetrain.utility.proceduralmap.common.model;
 
 public class Map {
 	
-	private Integer[][] mapData;
+	private MapDataPoint[][] mapData;
 	private MapMetadata mapMetadata;
 
-	public Integer[][] getMapData() {
+	public MapDataPoint[][] getMapData() {
 		return mapData;
 	}
 
-	public void setMapData(Integer[][] mapData) {
+	public void setMapData(MapDataPoint[][] mapData) {
 		this.mapData = mapData;
 	}
 

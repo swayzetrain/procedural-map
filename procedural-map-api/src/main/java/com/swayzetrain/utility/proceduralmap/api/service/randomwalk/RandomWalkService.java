@@ -1,28 +1,30 @@
 package com.swayzetrain.utility.proceduralmap.api.service.randomwalk;
 
 import com.swayzetrain.utility.proceduralmap.common.enums.Direction;
+import com.swayzetrain.utility.proceduralmap.common.enums.TileCategory;
 import com.swayzetrain.utility.proceduralmap.common.model.Coordinate;
+import com.swayzetrain.utility.proceduralmap.common.model.MapDataPoint;
 import com.swayzetrain.utility.proceduralmap.common.service.RandomizationService;
 
 public class RandomWalkService {
 	
-	private Integer[][] map;
+	private MapDataPoint[][] map;
 	private RandomizationService randomizationService;
 	
 	public RandomWalkService() {}
 	
 	public RandomWalkService(Integer width, Integer height, RandomizationService randomizationService) {
-		map = new Integer[height][width];
+		map = new MapDataPoint[height][width];
 		initializeMap();
 		this.randomizationService = randomizationService;
 	}
 	
-	public Integer[][] generateRandomWalkMap(Integer maxTunnels, Integer maxLength, Integer treasures) {
+	public MapDataPoint[][] generateRandomWalkMap(Integer maxTunnels, Integer maxLength) {
 		Integer width = map[0].length;
 		Integer height = map.length;
 		
 		Coordinate coordinate = randomizationService.generateRandomCoordinate(width, height);
-		map[coordinate.getY()][coordinate.getX()] = 1;
+		map[coordinate.getY()][coordinate.getX()].setTileCategory(TileCategory.PATH);
 		
 		for(int tunnelCount = 0; tunnelCount < maxTunnels; tunnelCount++) {
 			Direction directionToWalk = randomizationService.generateRandomDirection();
@@ -43,7 +45,7 @@ public class RandomWalkService {
 				}
 				
 				coordinate.setX(coordinate.getX() - 1);
-				map[coordinate.getY()][coordinate.getX()] = 1;
+				map[coordinate.getY()][coordinate.getX()].setTileCategory(TileCategory.PATH);
 			}
 			break;
 		case RIGHT:
@@ -53,7 +55,7 @@ public class RandomWalkService {
 				}
 				
 				coordinate.setX(coordinate.getX() + 1);
-				map[coordinate.getY()][coordinate.getX()] = 1;
+				map[coordinate.getY()][coordinate.getX()].setTileCategory(TileCategory.PATH);
 			}
 			break;
 		case UP:
@@ -63,7 +65,7 @@ public class RandomWalkService {
 				}
 				
 				coordinate.setY(coordinate.getY() - 1);
-				map[coordinate.getY()][coordinate.getX()] = 1;
+				map[coordinate.getY()][coordinate.getX()].setTileCategory(TileCategory.PATH);
 			}
 			break;
 		case DOWN:
@@ -73,7 +75,7 @@ public class RandomWalkService {
 				}
 				
 				coordinate.setY(coordinate.getY() + 1);
-				map[coordinate.getY()][coordinate.getX()] = 1;
+				map[coordinate.getY()][coordinate.getX()].setTileCategory(TileCategory.PATH);
 			}
 			break;
 		default:
@@ -84,7 +86,8 @@ public class RandomWalkService {
 	private void initializeMap() {
 		for(int y = 0; y < map.length; y++) {
 			for(int x = 0; x < map[0].length; x++) {
-				map[y][x] = 0;
+				map[y][x] = new MapDataPoint();
+				map[y][x].setTileCategory(TileCategory.WALL);
 			}
 		}
 	}

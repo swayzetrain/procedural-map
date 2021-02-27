@@ -8,8 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.swayzetrain.utility.proceduralmap.api.service.randomwalk.RandomWalkService;
-import com.swayzetrain.utility.proceduralmap.common.enums.TileType;
+import com.swayzetrain.utility.proceduralmap.common.enums.TileCategory;
 import com.swayzetrain.utility.proceduralmap.common.model.Map;
+import com.swayzetrain.utility.proceduralmap.common.model.MapDataPoint;
 import com.swayzetrain.utility.proceduralmap.common.model.MapMetadata;
 import com.swayzetrain.utility.proceduralmap.common.service.RandomizationService;
 import com.swayzetrain.utility.proceduralmap.common.service.ValidationService;
@@ -18,7 +19,7 @@ import com.swayzetrain.utility.proceduralmap.common.service.ValidationService;
 public class MapGenerationService {
 	
 	@Autowired
-	private MapUtilityService mapUtilityService;
+	private EdgePostProcessingService edgePostProcessingService;
 	
 	@Autowired
 	private ValidationService validationService;
@@ -26,7 +27,7 @@ public class MapGenerationService {
 	public ResponseEntity<Map> generateMap(MapMetadata mapMetadata) {		
 		Map map = new Map();
 		
-		Integer [][] mapData;
+		MapDataPoint [][] mapData;
 		
 		generateSeedIfNotProvided(mapMetadata);
 		RandomizationService randomizationService = new RandomizationService(mapMetadata.getSeed());
@@ -36,20 +37,16 @@ public class MapGenerationService {
 			validationService.validate(mapMetadata, MapMetadata.NewRandomWalk.class);
 			
 			RandomWalkService randomWalkService = new RandomWalkService(mapMetadata.getWidth(), mapMetadata.getHeight(), randomizationService);
-			mapData = randomWalkService.generateRandomWalkMap(mapMetadata.getMaxTunnels(), mapMetadata.getMaxLength(), mapMetadata.getTreasures());
+			mapData = randomWalkService.generateRandomWalkMap(mapMetadata.getMaxTunnels(), mapMetadata.getMaxLength());
 			
-			if(null != mapMetadata.getTreasures()) {
-				mapUtilityService.buryTreasureInMap(mapData, mapMetadata.getTreasures(), randomizationService);
-			}
-			
-			if(mapMetadata.isGenerateSpawnCoordinate()) {
-				mapMetadata.setSpawnCoordinate(mapUtilityService.findCoordinateofGivenType(mapData, randomizationService, TileType.PATH));
+			if(mapMetadata.isEdgePostProcessingEnabled()) {
+				edgePostProcessingService.postProcessMapEdges(mapData);
 			}
 			
 			//printMapToConsole(mapData);
 			break;
 		default:
-			mapData = new Integer [1][1];
+			mapData = new MapDataPoint [1][1];
 			break;
 		}
 		
@@ -59,17 +56,15 @@ public class MapGenerationService {
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 	
-	private void printMapToConsole(Integer[][] map) {
+	private void printMapToConsole(MapDataPoint[][] map) {
 		
 		for(int y = 0; y < map.length; y++) {
 			System.out.print("|");
 			for(int x = 0; x < map[0].length; x++) {
-				if(map[y][x] == 1) {
+				if(map[y][x].getTileCategory() == TileCategory.PATH) {
 					System.out.print(" ");
-				} else if(map[y][x] == 2){
-					System.out.print("\u001B[32m" + map[y][x] + "\u001B[0m");
 				} else {
-					System.out.print(map[y][x]);
+					System.out.print(map[y][x].getTileCategory().getValue());
 				}
 			}
 			System.out.println("|");
